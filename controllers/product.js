@@ -24,7 +24,7 @@ const getProductById = async (req, res, next) => {
         }
 
         // Transform the productImages object into an array of objects
-        const productImagesArray = Object.entries(product.productImages).map(([key, value]) => ({ image: value }));
+        const productImagesArray = Object.entries(product.productImages).map(([key, value]) => ({ key, image: value }));
 
         // Add the transformed productImagesArray to the product object
         product.productImages = productImagesArray;
