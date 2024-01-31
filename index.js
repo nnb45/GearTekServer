@@ -8,8 +8,11 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const createError = require('http-errors');
 
+// Use PORT provided in environment or default to 3000
+const port = process.env.PORT || 3000;
 
-const PORT = 3000;
+
+
 const mongodb = "mongodb+srv://baongoc_admin:452003Nn@cluster0.ysjpccc.mongodb.net/";
 const app = express();
 const hbs = exphbs.create({ /* config */ });
@@ -33,6 +36,11 @@ app.use('/api/products', productRouter);
 
 app.set('views', './views')
 app.set('view engine', 'pug')
+
+// Listen on `port` and 0.0.0.0
+app.listen(port, "0.0.0.0", function () {
+    // ...
+});
 
 mongoose.connect(mongodb, {
 })
