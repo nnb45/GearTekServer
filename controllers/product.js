@@ -22,6 +22,13 @@ const getProductById = async (req, res, next) => {
         if (!product) {
             return res.status(404).send({ message: 'Product not found' });
         }
+
+        // Transform the productImages object into an array of objects
+        const productImagesArray = Object.entries(product.productImages).map(([key, value]) => ({ image: value }));
+
+        // Add the transformed productImagesArray to the product object
+        product.productImages = productImagesArray;
+
         res.send(product);
     } catch (error) {
         res.status(500).send(error);
