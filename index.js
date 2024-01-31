@@ -22,6 +22,7 @@ const productRouter = require('./routes/product')
 app.use(cors());
 app.use(bodyParser.json());
 app.use(express.json());
+app.use(logger('dev'));
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
@@ -33,8 +34,6 @@ app.use('/api/products', productRouter);
 app.set('views', './views')
 app.set('view engine', 'pug')
 
-app.listen(PORT, () => console.log(`Server is now listening on port ${PORT}`))
-
 mongoose.connect(mongodb, {
 })
     .then(() => {
@@ -44,4 +43,14 @@ mongoose.connect(mongodb, {
         console.log("Connect Error!", err);
     });
 
+
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+});    
 module.exports = app;
