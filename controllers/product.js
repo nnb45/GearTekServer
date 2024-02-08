@@ -7,7 +7,7 @@ const createProduct = async (req, res, next) => {
     } catch (error) {
         res.status(400).send(error);
     }
-}
+};
 const getProducts = async (req, res, next) => {
     try {
         const products = await Product.find({});
@@ -15,7 +15,23 @@ const getProducts = async (req, res, next) => {
     } catch (error) {
         res.status(500).send(error);
     }
-}
+};
+const searchProducts = async (req, res, next) => {
+    try {
+        const { name } = req.query;
+        if (!name) {
+            return res.status(400).send({ message: 'Search query is required' });
+        }
+
+        const products = await Product.find({
+            productName: { $regex: name, $options: 'i' }
+        }).exec();
+
+        res.send(products);
+    } catch (error) {
+        res.status(500).send(error);
+    }
+};
 const getProductById = async (req, res, next) => {
     try {
         const product = await Product.findById(req.params.id);
@@ -34,4 +50,4 @@ const getProductById = async (req, res, next) => {
         res.status(500).send(error);
     }
 };
-module.exports = { createProduct, getProducts, getProductById };
+module.exports = { createProduct, getProducts, getProductById, searchProducts };
