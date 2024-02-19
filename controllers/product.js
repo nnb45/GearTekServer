@@ -11,6 +11,12 @@ const createProduct = async (req, res, next) => {
 const getProducts = async (req, res, next) => {
     try {
         const products = await Product.find({});
+        // Transform the productImages object into an array of objects for each product
+        products.forEach(product => {
+            const productImagesArray = Object.entries(product.productImages).map(([key, value]) => ({ key, image: value }));
+            product.productImages = productImagesArray;
+        });
+
         res.send(products);
     } catch (error) {
         res.status(500).send(error);
